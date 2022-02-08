@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.10;
+pragma solidity ^0.8.10;
 
-import "ds-test/test.sol";
+import "../../lib/ds-test/src/test.sol";
 
 contract ContractTest is DSTest {
     function setUp() public {}
