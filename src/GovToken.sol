@@ -16,4 +16,12 @@ contract GovToken is ERC721 {
         _safeMint(_to, totalSupply);
         totalSupply = totalSupply + 1;
     }
+
+    function snapshot() external view returns (address[] memory) {
+        address[] memory addrArray;
+        for (uint256 i = 0; i < totalSupply; i++) {
+            addrArray[i] = ownerOf[i];
+        }
+        return addrArray;
+    }
 }
