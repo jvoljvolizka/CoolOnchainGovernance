@@ -14,7 +14,9 @@ contract Borda {
         uint256 candidateCount;
         address[] snapshot;
         mapping(address => uint8[]) votes;
+        address[] voters;
         mapping(uint8 => string) candidateData;
+        mapping(uint8 => uint8) results;
         bool lock;
     }
 
@@ -45,6 +47,27 @@ contract Borda {
 
         require(check, "not in snapshot");
         require(vote.length == proposal.candidateCount, "wrong length");
+        if (proposal.votes[msg.sender].length == 0) {
+            proposal.voters.push(msg.sender);
+        }
         proposal.votes[msg.sender] = vote;
+    }
+
+    //this is horrible i don' even if this will work
+    function result(uint256 _proposalId)
+        external
+        view
+        returns (uint8[] memory)
+    {
+        Proposal storage proposal = proposals[_proposalId];
+        uint8[] memory record;
+        for (uint256 i = 0; i < proposal.voters.length; i++) {
+            for (uint8 j = 0; j < proposal.candidateCount; j++) {
+                record[proposal.votes[proposal.voters[i]][i]] =
+                    record[proposal.votes[proposal.voters[i]][i]] +
+                    uint8((proposal.candidateCount - j));
+            }
+        }
+        return record;
     }
 }
